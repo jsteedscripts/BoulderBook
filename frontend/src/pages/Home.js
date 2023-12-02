@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import SendDetails from '../components/SendDetails'
 
 const Home = () => {
     // create local state
@@ -23,7 +24,7 @@ const Home = () => {
         <div className="home">
             <div className="sends">
                 {sends && sends.map((send) => (
-                    <p key={send._id}>{send.grade}</p>
+                    <SendDetails key={send._id} send={send} />
                 ))}
             </div>
         </div>
