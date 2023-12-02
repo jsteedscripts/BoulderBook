@@ -25,6 +25,28 @@ const getSend = async (req, res) => {
 const createSend = async (req, res) => {
     const { grade, attempts, angle, flash, holds, moves } = req.body
 
+    let emptyFields = []
+
+    if (!grade) {
+        emptyFields.push('grade')
+    }
+    if (!angle) {
+        emptyFields.push('angle')
+    }
+    if (!flash) {
+        emptyFields.push('flash')
+    }
+    if (!holds) {
+        emptyFields.push('holds')
+    }
+    if (!moves) {
+        emptyFields.push('moves')
+    }
+    
+    if (emptyFields.length > 0) {
+        return res.status(400).json({ error: 'Please fill all required fields', emptyFields })
+    }
+
     // add to database
     try {
         const send = await Send.create({ grade, attempts, angle, flash, holds, moves })
@@ -41,7 +63,7 @@ const deleteSend = async (req, res) => {
         return res.status(404).json({error: 'No send corresponding to id'})
     }
 
-    const send = await Send.findOneAndDelete(id)
+    const send = await Send.findOneAndDelete({_id: id})
 
     if (!send) {
         return res.status(404).json({error: 'No send corresponding to id'})

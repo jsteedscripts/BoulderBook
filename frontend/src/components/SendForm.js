@@ -5,12 +5,13 @@ const SendForm = () => {
     const { dispatch } = useSendsContext()
 
     const [grade, setGrade] = useState('')
-    const [attempts, setAttempts] = useState('')
+    const [attempts, setAttempts] = useState(1)
     const [angle, setAngle] = useState('')
     const [flash, setFlash] = useState('')
-    const [holds, setHolds] = useState([])
-    const [moves, setMoves] = useState([])
+    const [holds, setHolds] = useState(null)
+    const [moves, setMoves] = useState(null)
     const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -28,16 +29,18 @@ const SendForm = () => {
 
         if (!response.ok) {
             setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
 
         if (response.ok) {
+            setEmptyFields([])
             setError(null)
             setGrade('')
-            setAttempts('')
+            setAttempts(1)
             setAngle('')
             setFlash('')
-            setHolds([])
-            setMoves([])
+            setHolds(null)
+            setMoves(null)
             dispatch({type: 'CREATE_SEND', payload: json})
         }
     }
@@ -49,7 +52,7 @@ const SendForm = () => {
             <select
                 onChange={(e) => setGrade(e.target.value)}
                 value={grade}
-                className="styled-dropdown"
+                className={`styled-dropdown ${emptyFields.includes('grade') ? 'error' : ''}`}
             >
                 <option value="" disabled>Select Grade</option>
                 {[...Array(18).keys()].map((value) => (
@@ -71,13 +74,14 @@ const SendForm = () => {
                 type="number" 
                 onChange={(e) => setAngle(e.target.value)} 
                 value={angle}
+                className={emptyFields.includes('angle') ? 'error' : ''}
             />
 
             <label>Flash:</label>
             <select
                 onChange={(e) => setFlash(e.target.value)}
                 value={flash}
-                className="styled-dropdown"
+                className={`styled-dropdown ${emptyFields.includes('flash') ? 'error' : ''}`}
             >
                 <option value="" disabled>Select Flash</option>
                 <option value="yes">Yes</option>
@@ -89,7 +93,7 @@ const SendForm = () => {
                 multiple
                 onChange={(e) => setHolds(Array.from(e.target.selectedOptions, (option) => option.value))}
                 value={holds}
-                className="styled-dropdown"
+                className={`styled-dropdown ${emptyFields.includes('holds') ? 'error' : ''}`}
             >
                 {["slopers", "pinches", "crimps", "jugs", "pockets", "underclings", "sidepulls"].map((holdType) => (
                     <option key={holdType} value={holdType}>
@@ -103,7 +107,7 @@ const SendForm = () => {
                 multiple
                 onChange={(e) => setMoves(Array.from(e.target.selectedOptions, (option) => option.value))}
                 value={moves}
-                className="styled-dropdown"
+                className={`styled-dropdown ${emptyFields.includes('moves') ? 'error' : ''}`}
             >
                 {["smear", "drop knee", "knee bar", "toe hook", "heel hook", "gaston", "dyno", "flag", "back flag", "bicycle", "mantle", "deadpoint"].map((moveType) => (
                     <option key={moveType} value={moveType}>

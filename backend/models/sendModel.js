@@ -11,7 +11,7 @@ const sendSchema = new Schema({
     attempts: {
         type: Number,
         min: [1, 'Number of attempts cannot be less than 1'],
-        default: 1
+        default: 1,
     },
     angle: {
         type: Number,

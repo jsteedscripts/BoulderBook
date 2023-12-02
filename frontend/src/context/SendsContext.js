@@ -12,6 +12,10 @@ export const sendsReducer = (state, action) => {
             return {
                 sends: [action.payload, ...state.sends]
             }
+        case 'DELETE_SEND':
+            return {
+                sends: state.sends.filter(s => s._id !== action.payload._id)
+            }
         default:
             return state
     }
