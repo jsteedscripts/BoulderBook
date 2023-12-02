@@ -27,7 +27,7 @@ const sendSchema = new Schema({
         type: String,
         required: true,
         lowercase: true,
-        enum: ["slopers", "pinches", "crimps", "jugs", "pockets", "underclings", "sidepull"],
+        enum: ["slopers", "pinches", "crimps", "jugs", "pockets", "underclings", "sidepulls"],
     }],
     moves: [{
         type: String,

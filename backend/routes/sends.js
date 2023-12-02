@@ -1,37 +1,27 @@
 const express = require('express')
 const Send = require('../models/sendModel')
+const {
+    getSends,
+    getSend,
+    createSend,
+    deleteSend,
+    updateSend
+} = require('../controllers/sendController')
 const router = express.Router()
 
 // get all sends
-router.get('/', (req, res) => {
-    res.json({msg: 'get all sends'})
-})
+router.get('/', getSends)
 
 // get single send
-router.get('/:id', (req, res) => {
-    res.json({msg: 'get single send'})
-})
+router.get('/:id', getSend)
 
 // post new send
-router.post('/', async (req, res) => {
-    const { grade, attempts, angle, flash, holds, moves } = req.body
-
-    try {
-        const send = await Send.create({grade, attempts, angle, flash, holds, moves})
-        res.status(200).json(send)
-    } catch (error) {
-        res.status(400).json({error: error.message})
-    }
-})
+router.post('/', createSend)
 
 // delete single send
-router.delete('/:id', (req, res) => {
-    res.json({msg: 'delete single send'})
-})
+router.delete('/:id', deleteSend)
 
 // update single send
-router.patch('/:id', (req, res) => {
-    res.json({msg: 'update single send'})
-})
+router.patch('/:id', updateSend)
 
 module.exports = router
