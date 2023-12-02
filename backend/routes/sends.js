@@ -1,4 +1,5 @@
 const express = require('express')
+const Send = require('../models/sendModel')
 const router = express.Router()
 
 // get all sends
@@ -12,8 +13,15 @@ router.get('/:id', (req, res) => {
 })
 
 // post new send
-router.post('/', (req, res) => {
-    res.json({msg: 'post new send'})
+router.post('/', async (req, res) => {
+    const { grade, attempts, angle, flash, holds, moves } = req.body
+
+    try {
+        const send = await Send.create({grade, attempts, angle, flash, holds, moves})
+        res.status(200).json(send)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
 })
 
 // delete single send
