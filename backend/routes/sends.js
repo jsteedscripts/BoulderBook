@@ -1,5 +1,5 @@
 const express = require('express')
-const Send = require('../models/sendModel')
+const requireAuth = require('../middleware/requireAuth')
 const {
     getSends,
     getSend,
@@ -8,6 +8,8 @@ const {
     updateSend
 } = require('../controllers/sendController')
 const router = express.Router()
+
+router.use(requireAuth)
 
 // get all sends
 router.get('/', getSends)
