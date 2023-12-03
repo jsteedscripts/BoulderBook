@@ -55,8 +55,8 @@ const SendForm = () => {
 
     return (
         <form className='create' onSubmit={handleSubmit}>
-            <h3>Log a New Send</h3>
-            <label>Send Grade (V Scale):</label>
+            <h3>Log a New Problem</h3>
+            <label>Problem Grade (V Scale):</label>
             <select
                 onChange={(e) => setGrade(e.target.value)}
                 value={grade}
