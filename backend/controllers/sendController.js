@@ -2,7 +2,8 @@ const Send = require('../models/sendModel')
 const mongoose = require('mongoose')
 
 const getSends = async (req, res) => {
-    const sends = await Send.find({}).sort({createdAt: -1})
+    const user_id = req.user._id
+    const sends = await Send.find({user_id}).sort({createdAt: -1})
     res.status(200).json(sends)
 }
 
@@ -49,7 +50,8 @@ const createSend = async (req, res) => {
 
     // add to database
     try {
-        const send = await Send.create({ grade, attempts, angle, flash, holds, moves })
+        const user_id = req.user._id
+        const send = await Send.create({ grade, attempts, angle, flash, holds, moves, user_id })
         res.status(200).json(send)
     } catch (error) {
         res.status(400).json({ error: error.message })

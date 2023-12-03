@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useSendsContext } from '../hooks/useSendsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const SendForm = () => {
     const { dispatch } = useSendsContext()
-
+    const { user } = useAuthContext()
+ 
     const [grade, setGrade] = useState('')
     const [attempts, setAttempts] = useState(1)
     const [angle, setAngle] = useState('')
@@ -16,13 +18,19 @@ const SendForm = () => {
     const handleSubmit = async(e) => {
         e.preventDefault()
 
+        if (!user) {
+            setError('You must be logged in to view')
+            return
+        }
+
         const send = { grade, attempts, angle, flash, holds, moves }
 
         const response = await fetch('/api/sends', {
             method: 'POST',
             body: JSON.stringify(send),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
@@ -33,8 +41,8 @@ const SendForm = () => {
         }
 
         if (response.ok) {
-            setEmptyFields([])
             setError(null)
+            setEmptyFields([])
             setGrade('')
             setAttempts(1)
             setAngle('')

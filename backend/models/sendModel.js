@@ -34,7 +34,11 @@ const sendSchema = new Schema({
         required: true,
         lowercase: true,
         enum: ["smear", "drop knee", "knee bar", "toe hook", "heel hook", "gaston", "dyno", "flag", "back flag", "bicycle", "mantle", "deadpoint"],
-    }]
+    }],
+    user_id: {
+        type: String,
+        required: true
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Send', sendSchema)

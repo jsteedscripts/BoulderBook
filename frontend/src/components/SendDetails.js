@@ -1,12 +1,21 @@
 import { useSendsContext } from '../hooks/useSendsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow'
 
 const SendDetails = ({ send }) => {
     const { dispatch } = useSendsContext()
+    const { user } = useAuthContext() 
 
     const handleClick = async () => {
+        if (!user) {
+            return
+        }
+
         const response = await fetch('/api/sends/' + send._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
 
