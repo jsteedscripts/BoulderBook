@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Navigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSendsContext } from '../hooks/useSendsContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
@@ -7,6 +7,7 @@ const EditSendForm = () => {
     const { sends, dispatch } = useSendsContext()
     const { id } = useParams()
     const { user } = useAuthContext()
+    const navigate = useNavigate()
  
     const [sendData, setSendData] = useState({
         grade: '',
@@ -55,17 +56,16 @@ const EditSendForm = () => {
                 'Authorization': `Bearer ${user.token}`
             }
         })
-        const json = await response.json()
+        const updatedSend = await response.json()
 
         if (!response.ok) {
-            setError(json.error)
+            setError(updatedSend.error)
         }
 
         if (response.ok) {
-            const updatedSend = await response.json()
             setError(null)
             dispatch({type: 'EDIT_SEND', payload: updatedSend})
-            Navigate('/')
+            navigate('/')
         }
     }
 
@@ -84,7 +84,6 @@ const EditSendForm = () => {
 
     return (
         <form className='create' onSubmit={handleSubmit}>
-            <h3>Edit Problem</h3>
             <label>Problem Grade (V Scale):</label>
             <select
                 name="grade"
@@ -101,7 +100,8 @@ const EditSendForm = () => {
             </select>
 
             <label>Number of attempts:</label>
-            <input 
+            <input
+                name="attempts"
                 type="number" 
                 onChange={handleInputChange} 
                 value={sendData.attempts}
@@ -109,6 +109,7 @@ const EditSendForm = () => {
 
             <label>Wall angle (Enter a number from 0 to 180):</label>
             <input 
+                name="angle"
                 type="number" 
                 onChange={handleInputChange} 
                 value={sendData.angle}
@@ -117,6 +118,7 @@ const EditSendForm = () => {
 
             <label>Flash:</label>
             <select
+                name="flash"
                 onChange={handleInputChange}
                 value={sendData.flash}
                 className={`styled-dropdown ${emptyFields.includes('flash') ? 'error' : ''}`}
@@ -129,6 +131,7 @@ const EditSendForm = () => {
             <label>Hold types:</label>
             <select
                 multiple
+                name="holds"
                 onChange={handleInputChange}
                 value={sendData.holds}
                 className={`styled-dropdown ${emptyFields.includes('holds') ? 'error' : ''}`}
@@ -143,6 +146,7 @@ const EditSendForm = () => {
             <label>Moves:</label>
             <select
                 multiple
+                name="moves"
                 onChange={handleInputChange}
                 value={sendData.moves}
                 className={`styled-dropdown ${emptyFields.includes('moves') ? 'error' : ''}`}
@@ -156,7 +160,7 @@ const EditSendForm = () => {
 
             <label>Gym:</label>
             <input 
-                type="gym" 
+                name="gym"
                 onChange={handleInputChange} 
                 value={sendData.gym}
                 className={emptyFields.includes('gym') ? 'error' : ''}

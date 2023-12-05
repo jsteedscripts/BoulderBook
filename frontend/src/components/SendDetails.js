@@ -35,8 +35,8 @@ const SendDetails = ({ send }) => {
             <p><strong>Moves: {send.moves.join(', ')}</strong></p>
             <p><strong>Gym: {send.gym}</strong></p>
             <p>{formatDistanceToNow(new Date(send.createdAt), { addSuffix: true })}</p>
-            <Link to={`/edit/${send._id}`} className="material-symbols-outlined">edit</Link>
             <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
+            <Link to={`/edit/${send._id}`} className="material-symbols-outlined">edit</Link>
         </div>
     )
 }

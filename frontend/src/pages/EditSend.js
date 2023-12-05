@@ -40,7 +40,7 @@ const EditSend = () => {
 
     return (
         <div>
-            <h2>Edit Send</h2>
+            <h2>Edit Problem</h2>
             <EditSendForm initialSend={send} onSubmit={handleUpdateSend} />
             <Link to="/" className="material-symbols-outlined">
                 back
