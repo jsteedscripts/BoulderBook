@@ -84,9 +84,10 @@ const updateSend = async (req, res) => {
         return res.status(404).json({error: 'No send corresponding to id'})
     }
 
-    const send = await Send.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
+    const send = await Send.findOneAndUpdate({_id: id},
+        {...req.body},
+        { new: true }
+    )
 
     if (!send) {
         return res.status(404).json({error: 'No send corresponding to id'})

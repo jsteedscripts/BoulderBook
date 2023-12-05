@@ -24,6 +24,6 @@ router.post('/', createSend)
 router.delete('/:id', deleteSend)
 
 // update single send
-router.patch('/:id', updateSend)
+router.patch('/edit/:id', updateSend)
 
 module.exports = router
