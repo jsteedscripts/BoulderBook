@@ -35,6 +35,10 @@ const sendSchema = new Schema({
         lowercase: true,
         enum: ["smear", "drop knee", "knee bar", "toe hook", "heel hook", "gaston", "dyno", "flag", "back flag", "bicycle", "mantle", "deadpoint"],
     }],
+    gym: {
+        type: String,
+        required: true
+    },
     user_id: {
         type: String,
         required: true

@@ -32,6 +32,7 @@ const SendDetails = ({ send }) => {
             <p><strong>Flash: {send.flash.toString()}</strong></p>
             <p><strong>Hold Types: {send.holds.join(', ')}</strong></p>
             <p><strong>Moves: {send.moves.join(', ')}</strong></p>
+            <p><strong>Gym: {send.gym}</strong></p>
             <p>{formatDistanceToNow(new Date(send.createdAt), { addSuffix: true })}</p>
             <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
         </div>

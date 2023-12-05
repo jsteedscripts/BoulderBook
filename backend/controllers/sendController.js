@@ -24,7 +24,7 @@ const getSend = async (req, res) => {
 }
 
 const createSend = async (req, res) => {
-    const { grade, attempts, angle, flash, holds, moves } = req.body
+    const { grade, attempts, angle, flash, holds, moves, gym } = req.body
 
     let emptyFields = []
 
@@ -43,6 +43,9 @@ const createSend = async (req, res) => {
     if (!moves) {
         emptyFields.push('moves')
     }
+    if (!gym) {
+        emptyFields.push('gym')
+    }
     
     if (emptyFields.length > 0) {
         return res.status(400).json({ error: 'Please fill all required fields', emptyFields })
@@ -51,7 +54,7 @@ const createSend = async (req, res) => {
     // add to database
     try {
         const user_id = req.user._id
-        const send = await Send.create({ grade, attempts, angle, flash, holds, moves, user_id })
+        const send = await Send.create({ grade, attempts, angle, flash, holds, moves, gym, user_id })
         res.status(200).json(send)
     } catch (error) {
         res.status(400).json({ error: error.message })

@@ -12,6 +12,7 @@ const SendForm = () => {
     const [flash, setFlash] = useState('')
     const [holds, setHolds] = useState(null)
     const [moves, setMoves] = useState(null)
+    const [gym, setGym] = useState('')
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -23,7 +24,7 @@ const SendForm = () => {
             return
         }
 
-        const send = { grade, attempts, angle, flash, holds, moves }
+        const send = { grade, attempts, angle, flash, holds, moves, gym }
 
         const response = await fetch('/api/sends', {
             method: 'POST',
@@ -49,6 +50,7 @@ const SendForm = () => {
             setFlash('')
             setHolds(null)
             setMoves(null)
+            setGym('')
             dispatch({type: 'CREATE_SEND', payload: json})
         }
     }
@@ -124,7 +126,15 @@ const SendForm = () => {
                 ))}
             </select>
 
-            <button>Add Send</button>
+            <label>Gym:</label>
+            <input 
+                type="gym" 
+                onChange={(e) => setGym(e.target.value)} 
+                value={gym}
+                className={emptyFields.includes('gym') ? 'error' : ''}
+            />
+
+            <button>Add Problem</button>
             {error && <div className="error">{error}</div>}
         </form>
     )
