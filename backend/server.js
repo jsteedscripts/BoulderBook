@@ -14,14 +14,16 @@ app.use((req, res, next) => {
     next()
 })
 
-// routes
-app.use('/api/sends', sendRoutes)
-app.use('/api/user', userRoutes)
-
 // connect to database
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('Connected to database')
+        app.locals.db = mongoose.connection.db;
+
+        // routes
+        app.use('/api/sends', sendRoutes)
+        app.use('/api/user', userRoutes)
+
         // listen to port
         app.listen(process.env.PORT, () => {
             console.log('Listening on port', process.env.PORT)
