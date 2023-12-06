@@ -5,6 +5,7 @@ import EditSend from './pages/EditSend'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
+import UserDashboard from './pages/UserDashboard'
 
 function App() {
   const { user } = useAuthContext()
@@ -15,6 +16,10 @@ function App() {
         <Navbar />
         <div className="pages">
           <Routes>
+            <Route 
+              path="/dashboard/:id"
+              element={user ? <UserDashboard /> : <Navigate to="/login" />}
+            />
             <Route 
               path="/edit/:id"
               element={user ? <EditSend /> : <Navigate to="/login" />}
