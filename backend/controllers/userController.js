@@ -13,7 +13,7 @@ const loginUser = async (req, res) => {
     try {
         const user = await User.login(email, password)
         const token = createToken(user._id)
-        res.status(200).json({email, token})
+        res.status(200).json({email, token, _id: user._id})
     } catch (error) {
         res.status(400).json({error: error.message})
     }
@@ -53,23 +53,19 @@ const userDashboard = async (req, res) => {
             },
             {
                 $group: {
-                    _id: null, // group all sends together
-                    totalSends: { $sum: 1 },
-                    avgAttempts: { $avg: '$attempts' },
+                    _id: '$angle', // group sends by angle
+                    count: { $sum: 1 },
                 },
             },
             {
-                // fields to output (totalSends and avgAttempts)
-                $project: {
-                    _id: 0, // exclude default _id field
-                    totalSends: 1,
-                    avgAttempts: 1,
+                $sort: {
+                    _id: 1,
                 },
             },
         ]).toArray()
 
         if (sendData.length > 0) {
-            res.json(sendData[0])
+            res.json({data: sendData})
         } else {
             res.json({msg: "no send data found for dashboard"})
         }

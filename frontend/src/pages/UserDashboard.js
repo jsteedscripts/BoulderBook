@@ -1,36 +1,38 @@
-import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useAuthContext } from "../hooks/useAuthContext"
+import SendsPerAngleBarChart from '../components/SendsPerAngleBarChart'
 
 const UserDashboard = () => {
-    const { user_id } = useParams()
-    const [ dashboardData, setDashboardData ] = useState(null)
+    const [data, setData] = useState([]);
+    const { user } = useAuthContext();
 
     useEffect(() => {
-        fetch(`api/users/dashboard/${user_id}`)
-            .then(response => response.json())
-            .then(data => setDashboardData(data))
-            .catch(error => console.error('Error fetch frontend dashboard data', error))
-    }, [user_id])
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`/api/user/dashboard/${user._id}`, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    }
+                })
 
-    useEffect(() => {
-        if (dashboardData) {
-            const ctx = document.getElementById('progressChart').getContext('2d')
-            new CharacterData(ctx, {
-                type: 'bar',
-                data: {
-
-                },
-                options: {
-
+                const json = await response.json()
+                if (response.ok) {
+                    setData(json.data)
                 }
-            })
+                else {
+                    console.log('Error fetching bar chart data 1')
+                }
+            } catch (error) {
+                console.error('Error fetching bar chart data', error)
+            }
         }
-    }, [dashboardData])
+        fetchData()
+    }, [user._id, user.token])
 
     return (
         <div>
             <h2>Dashboard</h2>
-            <canvas id="progressChart" width="400" height="200"></canvas>
+            <SendsPerAngleBarChart data={data} />
         </div>
     )
 }
